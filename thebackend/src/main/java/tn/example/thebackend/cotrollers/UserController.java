@@ -1,6 +1,7 @@
 package tn.example.thebackend.cotrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,6 +13,7 @@ import tn.example.thebackend.entities.User;
 import tn.example.thebackend.services.JwtService;
 import tn.example.thebackend.services.UserService;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -48,11 +50,16 @@ public class UserController {
     }
 
     @PostMapping("/authentificate")
-    public String authentificateAndGetToken(@RequestBody AuthRequest authRequest){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword()));
-        if (authentication.isAuthenticated())
-            return jwtService.generateToken(authRequest.getEmail());
-        else
-            throw new UsernameNotFoundException("invalid user request !");
+    public ResponseEntity<?> authentificateAndGetToken(@RequestBody AuthRequest authRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+        );
+        if (authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(authRequest.getEmail());
+            return ResponseEntity.ok(Collections.singletonMap("token", token)); // Return JSON with the token
+        } else {
+            throw new UsernameNotFoundException("Invalid user request!");
+        }
     }
+
 }

@@ -1,11 +1,48 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './signin.component.html',
-  styleUrl: './signin.component.css'
+  styleUrl: './signin.component.css',
 })
-export class SigninComponent {
+export class SigninComponent implements OnInit {
+  signinForm = new FormGroup({
+    email: new FormControl('', Validators.required), //, Validators.email
+    password: new FormControl('', Validators.required),
+  });
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    if (this.authService.isLoggedIn()) {
+      this.router.navigate(['user'])
+    }
+  }
+
+  onSubmit() {
+    if (this.signinForm.valid) {
+      const email = this.signinForm.get('email')?.value as string;
+      const password = this.signinForm.get('password')?.value as string;
+      this.authService.authenticate({ email, password }).subscribe({
+        next: (token) => {
+          this.authService.setToken(token);
+          console.log('Login successful, token stored!');
+          this.router.navigate(['/user']);
+        },
+        error: (err) => {
+          console.error('Login failed:', err);
+          //alert('Invalid credentials. Please try again.');
+        },
+      });
+    }
+  }
 
 }
