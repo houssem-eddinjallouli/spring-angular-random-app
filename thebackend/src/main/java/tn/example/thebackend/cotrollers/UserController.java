@@ -15,6 +15,7 @@ import tn.example.thebackend.services.UserService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -33,10 +34,11 @@ public class UserController {
     }
 
     @PostMapping("/new")
-    public String addNewUser(@RequestBody User user){
-        return service.addUser(user);
+    public ResponseEntity<Map<String, String>> addNewUser(@RequestBody User user) {
+        String message = service.addUser(user);
+        return ResponseEntity.ok(Collections.singletonMap("message", message));
     }
-
+        
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public List<User> getAllUsers(){

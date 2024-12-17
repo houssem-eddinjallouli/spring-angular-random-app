@@ -48,6 +48,7 @@ public class UserService {
 
     public String addUser(User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles("ROLE_USER");
         repository.save(user);
         return "user added succesfuly";
     }

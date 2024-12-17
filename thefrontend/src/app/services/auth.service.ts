@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { NewUserModel } from '../models/usermodel';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,17 @@ export class AuthService {
     const body = { email, password };
     return this.http.post<string>(`${this.apiServerUrl}/authentificate`, body, { headers });
   }
+
+  new(user: NewUserModel) {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.password
+    };
+    return this.http.post<string>(`${this.apiServerUrl}/new`, body, { headers, responseType: 'text' as 'json' });
+  }
+  
 
 }

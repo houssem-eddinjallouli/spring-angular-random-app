@@ -16,13 +16,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int userId;
     String name;
+    String firstName;
+    String lastName;
+    @Column(unique = true)
     String email;
     String password;
     String roles;
 
 
     public enum Gender{
-        Homme,Femme,Non_Binaire,Genre_Fluide,Agender,Bigenre,Trigender,Genderqueer
+        Homme,Femme
     }
 
 }
