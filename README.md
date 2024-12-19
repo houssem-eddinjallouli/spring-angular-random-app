@@ -33,15 +33,16 @@ This project is a simple template for building a secure application with authent
     - Navigate to the frontend folder.
     - **Install dependencies**:
 ```
-    `npm install`
+    npm install
 ```
 
-    - **Run the Angular app**:
+- **Run the Angular app**:
         
 ```
         ng s -o
 ```
-    - The application will be available at `http://localhost:4200`.
+
+- The application will be available at `http://localhost:4200`.
 4. **Authorization Configuration**:
     
     - After adding new controllers to the backend, update the **SecurityConfiguration** class in the `config` package to ensure the appropriate authorization:
@@ -85,4 +86,4 @@ This project is intended to be a template, so after running the application, you
 ## Final Words
 
 Don't forget to ⭐ **star** this project if you find it useful, and make sure to **[subscribe to my YouTube channel](https://www.youtube.com/@houssemjallouli6083)** for more content and tutorials!
-Feel free to reach out to me if you have any questions or need further assistance. Happy coding!(houssem-eddin.jallouli@esprit.tn)
+Feel free to reach out to me if you have any questions or need further assistance(houssem-eddin.jallouli@esprit.tn). Happy coding!
