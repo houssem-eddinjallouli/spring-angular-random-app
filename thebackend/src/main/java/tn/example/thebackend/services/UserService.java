@@ -23,6 +23,21 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public void initUser() {
+        if (repository.findByEmail("houssem").isEmpty()) {
+            User adminUser = new User();
+            adminUser.setEmail("houssem");
+            adminUser.setPassword(passwordEncoder.encode("houssem"));
+            adminUser.setFirstName("houssem-eddin");
+            adminUser.setLastName("admin");
+            adminUser.setRoles("ROLE_ADMIN,ROLE_HOUSSEM");// just make sure that it contains ROLE_ADMIN to be an admin
+            repository.save(adminUser);
+        }else {
+            System.out.println("User with email houssem already exists.");
+        }
+
+    }
+
 //    List<User> userList=null;
 //    @PostConstruct
 //    public void loadUsersFromDB(){

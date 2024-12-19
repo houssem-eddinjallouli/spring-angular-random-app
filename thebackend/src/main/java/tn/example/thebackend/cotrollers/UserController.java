@@ -1,5 +1,6 @@
 package tn.example.thebackend.cotrollers;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,11 @@ public class UserController {
     private JwtService jwtService;
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @PostConstruct
+    public void initRoleAndUser() {
+        service.initUser();
+    }
 
     @GetMapping("/welcome")
     public String welcome() {
