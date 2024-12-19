@@ -2,12 +2,14 @@ package tn.example.thebackend.services;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tn.example.thebackend.entities.User;
 import tn.example.thebackend.repositories.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -44,6 +46,11 @@ public class UserService {
 //                .orElseThrow(()->new RuntimeException("product "+id+" not found."));
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User " + id + " not found."));
+    }
+
+    public String getRoleByEmail(String mail){
+        Optional<User> user = repository.findByEmail(mail);
+        return user.map(User::getRoles).orElseThrow( ()-> new UsernameNotFoundException("not found"));
     }
 
     public String addUser(User user){

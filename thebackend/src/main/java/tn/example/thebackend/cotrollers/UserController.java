@@ -14,6 +14,7 @@ import tn.example.thebackend.services.JwtService;
 import tn.example.thebackend.services.UserService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class UserController {
     private AuthenticationManager authenticationManager;
 
     @GetMapping("/welcome")
-    public String welcome(){
+    public String welcome() {
         return "welcome houssem-eddin";
     }
 
@@ -38,16 +39,16 @@ public class UserController {
         String message = service.addUser(user);
         return ResponseEntity.ok(Collections.singletonMap("message", message));
     }
-        
+
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return service.getUsers();
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public User getUserById(@PathVariable int id){
+    public User getUserById(@PathVariable int id) {
         return service.getUser(id);
     }
 
@@ -57,8 +58,11 @@ public class UserController {
                 new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
         );
         if (authentication.isAuthenticated()) {
-            String token = jwtService.generateToken(authRequest.getEmail());
-            return ResponseEntity.ok(Collections.singletonMap("token", token)); // Return JSON with the token
+            String roles = service.getRoleByEmail(authRequest.getEmail());
+
+            String token = jwtService.generateToken(roles, authRequest.getEmail());
+
+            return ResponseEntity.ok(Collections.singletonMap("token", token));
         } else {
             throw new UsernameNotFoundException("Invalid user request!");
         }

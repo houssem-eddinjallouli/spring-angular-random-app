@@ -23,7 +23,7 @@ export class SigninComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
-      this.router.navigate(['user'])
+      this.router.navigate(['user']);
     }
   }
 
@@ -32,10 +32,13 @@ export class SigninComponent implements OnInit {
       const email = this.signinForm.get('email')?.value as string;
       const password = this.signinForm.get('password')?.value as string;
       this.authService.authenticate({ email, password }).subscribe({
-        next: (token) => {
-          this.authService.setToken(token);
+        next: (houssem) => {
+          this.authService.setToken(houssem.token);
           console.log('Login successful, token stored!');
-          this.router.navigate(['/user']);
+          //is it an admin ?
+          if (this.authService.getRoles().includes('ROLE_ADMIN')) {
+            this.router.navigate(['/admin']);
+          } else this.router.navigate(['/user']);
         },
         error: (err) => {
           console.error('Login failed:', err);
@@ -44,5 +47,4 @@ export class SigninComponent implements OnInit {
       });
     }
   }
-
 }

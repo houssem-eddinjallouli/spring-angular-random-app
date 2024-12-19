@@ -8,11 +8,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
+import tn.example.thebackend.entities.User;
+import tn.example.thebackend.repositories.UserRepository;
 
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Component
@@ -52,8 +55,9 @@ public class JwtService {
     }
     //
 
-    public String generateToken(String userEmail){
+    public String generateToken(String roles, String userEmail){
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles);
         return createToken(claims, userEmail);
     }
 

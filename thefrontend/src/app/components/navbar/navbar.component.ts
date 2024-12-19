@@ -16,9 +16,6 @@ logout() {
 /**
  *
  */
-constructor(private authService: AuthService) {
-  
-  
-}
+constructor(private authService: AuthService) {}
 
 }
